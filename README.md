@@ -15,3 +15,6 @@ pod 'MyTutorial', :git => 'https://github.com/elisimmonds/MyTutorial.git'
 2. Navigate to the MyTutorial directory in Terminal
 3. Run 'pod install'
 4. Open the .xcworkspace file and run.
+
+# Images
+![Example of first page](https://imgur.com/l01EMm2)
