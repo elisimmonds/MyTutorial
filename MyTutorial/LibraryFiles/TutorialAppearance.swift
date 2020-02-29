@@ -16,7 +16,7 @@ open class TutorialAppearance {
     var descriptionFont: String!
     var backgroundColor: UIColor!
     
-    convenience init(titleSize: CGFloat?, titleFont: String?, descriptionSize: CGFloat?, descriptionFont: String?, backgroundColor: UIColor?) {
+    public convenience init(titleSize: CGFloat?, titleFont: String?, descriptionSize: CGFloat?, descriptionFont: String?, backgroundColor: UIColor?) {
         self.init()
         self.titleFontSize = titleSize ?? 20
         self.titleFont = titleFont ?? "HelveticaNeue-Bold"

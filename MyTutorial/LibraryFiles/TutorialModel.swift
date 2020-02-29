@@ -14,7 +14,7 @@ open class TutorialModel {
     var description = ""
     var image: UIImage?
     
-    init(title: String, description: String, image: UIImage?) {
+    public init(title: String, description: String, image: UIImage?) {
         self.title = title
         self.description = description
         self.image = image
