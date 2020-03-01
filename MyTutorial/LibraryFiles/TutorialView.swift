@@ -10,6 +10,7 @@ import Foundation
 import UIKit
 import SnapKit
 
+/// An individual tutoral view that consists of a title, description and image. 
 open class TutorialView: UIView {
 
     let titleLabel = UILabel()
@@ -53,18 +54,19 @@ open class TutorialView: UIView {
             make.height.equalTo(100)
         }
         self.descriptionLabel.snp.makeConstraints{(make) -> Void in
-            make.top.equalTo(self.titleLabel).offset(margin)
+            make.top.equalTo(self.titleLabel).offset(margin + 25)
             make.left.equalToSuperview().offset(margin)
             make.right.equalToSuperview().inset(margin)
             make.height.equalTo(180)
         }
     }
     
+    /**
+     Creates a Tutorial View
+     - Parameter tutorial: The tutorial model
+     - Parameter appearance: Appearance configuration for the walkthrough.
+     */
     public convenience init(tutorial: TutorialModel, appearance: TutorialAppearance) {
         self.init(title: tutorial.title, description: tutorial.description, image: tutorial.image, appearance: appearance)
-    }
-    
-    @objc func buttonClicked(_ sender: Any) {
-        
     }
 }
