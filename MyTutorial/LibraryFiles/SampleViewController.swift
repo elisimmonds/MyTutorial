@@ -40,11 +40,13 @@ class SampleViewController: UIViewController {
     /// Display the Walkthrough screen modally
     @objc private func infoButtonAction(tapGestureRecognizer: UITapGestureRecognizer) -> Void {
         let tutorials: [TutorialModel] = [
-            TutorialModel(title: "Test1", description: "This is my test. First grab a buddy and try the App!", image: UIImage.init(systemName: "camera")),
-            TutorialModel(title: "Test2", description: "This is my test. First grab a buddy and try the App!", image: UIImage.init(systemName: "camera"))
+            TutorialModel(title: "Test", description: "This is my test. First grab a buddy and try the App!", image: UIImage.init(systemName: "camera")),
+            TutorialModel(title: "This is a long title example", description: "With a super long description. It probably should never be thing long because users will lose interest.", image: UIImage.init(systemName: "camera"))
         ]
         let appearance = TutorialAppearance(titleSize: 50, titleFont: "HelveticaNeue-Bold", descriptionSize: 15, descriptionFont: "HelveticaNeue", backgroundColor: UIColor.systemGray)
-        let tutorialViewController = TutorialViewController(tutorialPages: tutorials, tutorialAppearance: appearance)
+        let tutorialViewController = TutorialViewController(tutorialPages: tutorials, tutorialAppearance: appearance, completion: {
+            print("Hello World.")
+        })
         let navController = UINavigationController(rootViewController: tutorialViewController)
         self.navigationController?.present(navController, animated: true, completion: nil)
     }

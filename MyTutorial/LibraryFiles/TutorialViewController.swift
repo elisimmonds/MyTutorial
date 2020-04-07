@@ -19,16 +19,19 @@ open class TutorialViewController: UIViewController {
     private var tutorialModels: [TutorialModel]?
     private var tutorialViews: [TutorialView]?
     private var tutorialAppearance: TutorialAppearance?
+    private var completion: (()->())?
 
     /**
      Initializer for the TutorialViewController
      - Parameter tutorialPages: Data representation of the information displayed on each tutorial page, in order.
      - Parameter tutorialAppearance: Configures the appearance of all subviews.
+     - Parameter completion: A completion handler that is fired when the View Controller disappears.
      */
-    public convenience init(tutorialPages: [TutorialModel], tutorialAppearance: TutorialAppearance) {
+    public convenience init(tutorialPages: [TutorialModel], tutorialAppearance: TutorialAppearance, completion: (() -> ())?) {
         self.init(tutorialPages: tutorialPages)
         
         self.tutorialAppearance = tutorialAppearance
+        self.completion = completion
     }
     
     private convenience init(tutorialPages: [TutorialModel]) {
@@ -38,12 +41,14 @@ open class TutorialViewController: UIViewController {
         self.navigationController?.navigationBar.isHidden = false
         self.edgesForExtendedLayout = [] // keeps views from being added below the navigation bar
         self.tutorialModels = tutorialPages
+        self.completion = nil
     }
     
     override open func viewDidLoad() {
         super.viewDidLoad()
         
         self.scrollView.backgroundColor = tutorialAppearance?.backgroundColor
+        self.view.backgroundColor = tutorialAppearance?.backgroundColor
         self.scrollView.contentSize = CGSize(width: view.frame.width * CGFloat(self.tutorialModels?.count ?? 1), height: self.preferredContentSize.height)
         self.scrollView.isPagingEnabled = true
         self.scrollView.isScrollEnabled = true
@@ -55,7 +60,8 @@ open class TutorialViewController: UIViewController {
         self.view.addSubview(self.scrollView)
         
         self.scrollView.snp.makeConstraints{(make) -> Void in
-            make.edges.equalTo(self.view)
+            make.top.left.right.equalTo(self.view)
+            make.bottom.equalToSuperview().inset(self.view.safeAreaInsets.bottom + 50)
         }
         self.createPages()
         
@@ -70,6 +76,15 @@ open class TutorialViewController: UIViewController {
         }
     }
     
+    open override func viewWillDisappear(_ animated: Bool) {
+        super.viewWillDisappear(animated)
+        
+        // Call completion handler on dismissal
+        if let completion = self.completion {
+            completion()
+        }
+    }
+    
     private func createPages() -> Void {
         guard let tutorialModels = self.tutorialModels else { return }
         guard let appearance = self.tutorialAppearance else { return }
@@ -78,7 +93,7 @@ open class TutorialViewController: UIViewController {
         for tutorial in tutorialModels {
             let tutorialView = TutorialView(tutorial: tutorial, appearance: appearance)
             self.tutorialViews?.append(tutorialView)
-            tutorialView.frame = CGRect(x: view.frame.width * CGFloat(idx), y: 0, width: view.frame.width, height: view.frame.height - 50)
+            tutorialView.frame = CGRect(x: view.frame.width * CGFloat(idx), y: 0, width: view.frame.width, height: view.frame.height - 100)
             self.scrollView.addSubview(tutorialView)
             
             idx += 1
@@ -88,11 +103,8 @@ open class TutorialViewController: UIViewController {
 
 extension TutorialViewController: UIScrollViewDelegate {
     /*
-         * default function called when view is scolled. In order to enable callback
-         * when scrollview is scrolled, the below code needs to be called:
-         * slideScrollView.delegate = self or
-         */
-    
+     * default function called when view is scolled.
+     */
     public func scrollViewDidScroll(_ scrollView: UIScrollView) {
         let pageIndex = round(scrollView.contentOffset.x/view.frame.width)
         self.pageControl.currentPage = Int(pageIndex)

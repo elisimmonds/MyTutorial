@@ -29,6 +29,7 @@ open class TutorialView: UIView {
         self.imageView.image = image
         self.titleLabel.text = title
         self.titleLabel.textAlignment = .center
+        self.titleLabel.adjustsFontSizeToFitWidth = true
         self.titleLabel.font = UIFont.init(name: appearance.titleFont, size: appearance.titleFontSize)
         self.descriptionLabel.text = description
         self.descriptionLabel.contentMode = .scaleToFill
@@ -43,21 +44,21 @@ open class TutorialView: UIView {
         
         self.imageView.snp.makeConstraints{(make) -> Void in
             make.top.equalToSuperview().offset(imageMargin)
-            make.left.equalToSuperview().offset(imageMargin)
-            make.right.equalToSuperview().inset(imageMargin)
-            make.height.width.equalTo(self.imageView.snp.width)
+            make.centerX.equalToSuperview()
+            make.bottom.equalTo(self.snp.bottom).multipliedBy(0.5)
+            make.width.equalTo(self.imageView.snp.height)
         }
         self.titleLabel.snp.makeConstraints{(make) -> Void in
             make.top.equalTo(self.imageView.snp.bottom).offset(imageMargin)
             make.left.equalToSuperview().offset(margin)
             make.right.equalToSuperview().inset(margin)
-            make.height.equalTo(100)
+            make.bottom.equalTo(self).multipliedBy(0.75)
         }
         self.descriptionLabel.snp.makeConstraints{(make) -> Void in
             make.top.equalTo(self.titleLabel).offset(margin + 25)
             make.left.equalToSuperview().offset(margin)
             make.right.equalToSuperview().inset(margin)
-            make.height.equalTo(180)
+            make.bottom.equalTo(self.snp.bottom)
         }
     }
     
